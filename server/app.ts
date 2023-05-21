@@ -5,9 +5,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import socketController from './handlers';
 import { checkAuth } from './middleware';
 import router from './routes/auth';
+import redisClient from './redisClient';
+import socketHandler from './handlers';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
@@ -27,12 +28,15 @@ app.get('/', (req, res) => {
 app.use('/api/auth', router);
 
 checkAuth(io);
-io.on('connection', socketController)
+socketHandler(io);
+// io.on('connection', socketController)
 
 mongoose.connect(process.env.MONGO_URL).then(res => {
 	console.log("Connected to MongoDB")
-	server.listen(process.env.PORT, () => {
-		console.log(`Server running on port ${process.env.PORT}`)
+	redisClient.connect().then(() => {
+		server.listen(process.env.PORT, () => {
+			console.log(`Server running on port ${process.env.PORT}`)
+		})
 	})
 }).catch(err => {
 	console.log(err)

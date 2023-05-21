@@ -13,5 +13,5 @@ interface IRoom {
 interface IMessage {
 	message: string;
 	sendBy: IUser;
-	room: IRoom;
+	room: string;
 }

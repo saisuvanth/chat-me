@@ -1,11 +1,13 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 
 interface Props {
 	setOpen: Dispatch<SetStateAction<boolean>>;
 	state?: 'create' | 'join';
+	handleSubmit: (roomId: string) => void
+	roomError?: string;
 }
 
-const CustomModal: FC<Props> = ({ setOpen, state }) => {
+const CustomModal: FC<Props> = ({ setOpen, state, handleSubmit, roomError }) => {
 	const [value, setValue] = useState('');
 	const [error, setError] = useState('');
 
@@ -13,10 +15,17 @@ const CustomModal: FC<Props> = ({ setOpen, state }) => {
 		if (!value) {
 			setError('Give room name')
 		} else {
-			console.log(value);
+			// console.log(value);
+			handleSubmit(value);
 			setOpen(false);
 		}
 	}
+
+	useEffect(() => {
+		if (roomError) {
+			setError(roomError);
+		}
+	}, [roomError])
 
 	return (<>
 		<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"

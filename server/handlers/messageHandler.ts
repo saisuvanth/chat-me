@@ -1,12 +1,16 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import Message from "../models/Message";
 
-const messageHandler = (socket: Socket) => {
-	socket.on('send-message', async ({ roomId, message }) => {
+const messageHandler = (io: Server, socket: Socket) => {
+	socket.on('send-message', async (roomId, message) => {
+		console.log(socket)
+		console.log((io.sockets as any))
 		const user = socket.data.user;
-		const sMessage = await Message.create({ roomId, userId: user.userId, message });
+		console.log(roomId, message, user);
+		let sMessage = await Message.create({ room: roomId, sendBy: user._id, message });
 		console.log(sMessage)
-		socket.to(roomId).emit('receive-message', message);
+		sMessage = await sMessage.populate('sendBy');
+		io.to(roomId).emit('message', sMessage);
 	})
 }
 export default messageHandler;

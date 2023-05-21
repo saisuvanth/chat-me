@@ -24,13 +24,20 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
 	useEffect(() => {
 		const fn = auth.onAuthStateChanged((user) => {
+			console.log(user)
+			if (user === null) {
+				setLoading(false);
+			}
 			if (user) {
 				setUser(user);
 				setLoading(false);
 			}
 		})
+		if (user) {
+			setLoading(false);
+		}
 		return fn;
-	})
+	}, [user])
 
 	return (
 		<AuthContext.Provider value={{ login, logout, user, loading }}>

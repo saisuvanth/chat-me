@@ -7,9 +7,13 @@ const MessageSchema = new Schema<IMessage>({
 	},
 	sendBy: {
 		type: Schema.Types.ObjectId,
-		ref: 'User',
+		ref: 'Users',
 		required: true,
 	},
+	room: {
+		type: String,
+		required: true
+	}
 }, {
 	timestamps: true,
 });

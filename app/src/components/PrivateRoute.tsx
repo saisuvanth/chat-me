@@ -1,7 +1,7 @@
 import { FC, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
-import Login from "../pages/Login";
 import Loading from "./Loading";
+import { Navigate } from "react-router-dom";
 
 interface Props {
 	children: React.ReactNode;
@@ -9,6 +9,8 @@ interface Props {
 
 const PrivateRoute: FC<Props> = ({ children }) => {
 	const { user, loading } = useContext(AuthContext);
+	console.log(loading)
+
 
 	if (loading) {
 		return <Loading />
@@ -19,7 +21,7 @@ const PrivateRoute: FC<Props> = ({ children }) => {
 			{children}
 		</>
 	}
-	return <Login />
+	return <Navigate to="/login" />
 }
 
 export default PrivateRoute

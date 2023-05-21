@@ -1,9 +1,23 @@
+import { FC } from "react";
 
-const Avatar = () => {
+interface Props {
+	src?: string;
+	name?: string;
+}
+
+const Avatar: FC<Props> = ({ src, name }) => {
+	if (!src) {
+		return <div
+			className="flex items-center justify-center h-10 w-10 rounded-full text-lg font-semibold bg-indigo-500 flex-shrink-0"
+		>
+			{name && name[0].toLocaleUpperCase()}
+		</div>
+	}
+
 	return (
 		<div className="h-10 w-10 rounded-full border overflow-hidden">
 			<img
-				src="https://avatars3.githubusercontent.com/u/2763884?s=128"
+				src={src}
 				alt="Avatar"
 				className="h-full w-full"
 			/>

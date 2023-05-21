@@ -9,9 +9,9 @@ export const checkAuth = (io: Server) => {
 			if (token) {
 				const payload = await auth.verifyIdToken(token as string);
 				if (payload) {
-					console.log(payload)
+					// console.log(payload)
 					const user = await getUser({ userId: payload.uid, email: payload.email!, name: payload.name, avatar: payload.picture!, status: 'online' });
-					console.log(user)
+					// console.log(user)
 					socket.data.user = user;
 					return next();
 				}
